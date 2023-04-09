@@ -18,7 +18,10 @@ public class SimpleShell {
 
     public static void prettyPrint(String output) {
         // yep, make an effort to format things nicely, eh?
-        System.out.println(output);
+        String[] lister = output.split(",");
+        for (String i: lister) {
+            System.out.println(i);
+        }
     }
     public static void main(String[] args) throws java.io.IOException {
         YouAreEll webber = new YouAreEll(new TransactionController(), new MessageController(), new IdController());
@@ -68,7 +71,7 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("get-id")) {
-                    String results = webber.makecall("get-ids", "", "");
+                    String results = webber.makecall("get-id", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
@@ -86,17 +89,27 @@ public class SimpleShell {
                     continue;
                 }
 
-                else if (list.contains("get")) {
-                    String results = webber.makecall("get-ids", "", "");
-                    SimpleShell.prettyPrint(results);
+                else if (list.contains("put-id")) {
+                    if (list.size() >= 3) {
+                        String idtoRegister = list.get(1);
+                        String githubName = list.get(2);
+                        String results = webber.makecall("put-id", idtoRegister, githubName);
+                        SimpleShell.prettyPrint(results);
+                    } else {
+                        System.out.println("Please provide an ID and GitHub name.");
+                    }
                     continue;
                 }
 
                 // messages
-                if (list.contains("messages")) {
-                    String results = webber.makecall("get-ids", "", "");
+                if (list.contains("get-messages")) {
+                    String results = webber.makecall("get-messages", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
+                }
+
+                else if (list.contains("post-messages")) {
+
                 }
                 // you need to add a bunch more.
 

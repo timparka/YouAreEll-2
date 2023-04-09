@@ -42,4 +42,12 @@ public class Id {
     public void setGithub(String github) {
         this.github = github;
     }
+    public void setIdtoRegister(String github) {
+        this.github = github;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + " Github(" + this.github + ") ";
+    }
 }

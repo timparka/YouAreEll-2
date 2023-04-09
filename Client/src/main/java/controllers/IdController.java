@@ -6,6 +6,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -63,6 +64,7 @@ public class IdController {
 
         return Arrays.stream(ids)
                 .collect(Collectors.toList());
+
     }
 
     public Id postId(Id id) {
@@ -98,10 +100,56 @@ public class IdController {
 
         return id;
     }
+    public Id putId(String githubName, String newIdtoRegister) {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPut httpPut = new HttpPut(rootURL + "/ids/" + githubName);
+
+        Id updatedId = null;
+
+        try {
+            Id idToUpdate = getIdByGithubName(githubName);
+            if (idToUpdate != null) {
+                idToUpdate.setIdtoRegister(newIdtoRegister);
+                ObjectMapper objectMapper = new ObjectMapper();
+                String json = objectMapper.writeValueAsString(idToUpdate);
+                HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+                httpPut.setEntity(entity);
+
+                CloseableHttpResponse response = httpClient.execute(httpPut);
+                int statusCode = response.getStatusLine().getStatusCode();
+
+                if (statusCode == 200 || statusCode == 201) {
+                    String responseBody = EntityUtils.toString(response.getEntity());
+                    updatedId = objectMapper.readValue(responseBody, Id.class);
+                } else {
+                    // Handle the error
+                }
+
+                response.close(); // Close the response
+            } else {
+                // Handle the case when the GitHub name is not found
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                httpClient.close(); // Close the httpClient
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return updatedId;
+    }
 
 
-    public Id putId(Id id) {
+    public Id getIdByGithubName(String githubName) {
+        List<Id> ids = getIds();
+        for (Id id : ids) {
+            if (id.getGithub().equalsIgnoreCase(githubName)) {
+                return id;
+            }
+        }
         return null;
     }
- 
 }

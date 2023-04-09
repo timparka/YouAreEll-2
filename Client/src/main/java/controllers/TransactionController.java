@@ -7,29 +7,31 @@ import java.util.List;
 
 public class TransactionController {
     private String rootURL = "http://zipcode.rocks:8085";
-    private MessageController msgCtrl;
-    private IdController idCtrl;
+//    private MessageController msgCtrl;
+//    private IdController idCtrl;
 
+    IdController idController = new IdController();
     public TransactionController(){
 
     }
 
-    public TransactionController(MessageController m, IdController j) {
-        msgCtrl = m;
-        idCtrl = j;
-    }
+//    public TransactionController(MessageController m, IdController j) {
+//        msgCtrl = m;
+//        idCtrl = j;
+//    }
 
-    public TransactionController(TransactionController transactionController) {
-    }
+//    public TransactionController(TransactionController transactionController) {
+//    }
 
     public List<Id> getIds() {
 
        return new ArrayList<Id>();
     }
 
-    public Id postId(String idtoRegister, String githubName) {
+    public void postId(String idtoRegister, String githubName) {
         Id tid = new Id("", idtoRegister, githubName); // Todo
-        tid = idCtrl.postId(tid);
-        return tid;
+       // tid = idCtrl.postId(tid);
+        idController.postId(tid);
+        //return tid;
     }
 }

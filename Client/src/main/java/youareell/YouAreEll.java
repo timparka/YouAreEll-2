@@ -1,6 +1,12 @@
 package youareell;
 
-import controllers.*;
+import controllers.IdController;
+import controllers.MessageController;
+import controllers.TransactionController;
+import models.Id;
+import models.Message;
+
+import java.util.List;
 
 public class YouAreEll {
 
@@ -32,9 +38,11 @@ public class YouAreEll {
         switch(request[0].toUpperCase()) {
             case "GET":
                 if (controller.contains("id")) {
-                    idController.getIds();
+                    List<Id> ids = idController.getIds();
+                    return ids.toString();
                 } else if (controller.contains("messages")) {
-                    messageController.getMessages();
+                    List<Message> msg = messageController.getMessages();
+                    return msg.toString();
                 }
                 break;
             case "POST":
@@ -42,6 +50,13 @@ public class YouAreEll {
                     transactionController.postId(idtoRegister, githubName);
                 }else if (controller.contains("messages")) {
 //                    messageController.postMessage();
+                }
+                break;
+            case "PUT":
+                if (controller.contains("id")) {
+                    idController.putId(githubName, idtoRegister);
+                } else if (controller.contains("messages")) {
+                    messageController.getMessages();
                 }
                 break;
             default:
