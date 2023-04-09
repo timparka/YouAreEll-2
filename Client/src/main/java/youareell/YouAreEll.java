@@ -4,29 +4,48 @@ import controllers.*;
 
 public class YouAreEll {
 
-    TransactionController tt;
+    private TransactionController transactionController;
+    private IdController idController;
+    private MessageController messageController;
 
-    public YouAreEll (TransactionController t) {
-        this.tt = t;
+    public YouAreEll (TransactionController transactionController,
+                      MessageController messageController,
+                      IdController idController) {
+        this.transactionController = transactionController;
+        this.messageController = messageController;
+        this.idController = idController;
     }
 
+    // Todo delete?
     public static void main(String[] args) {
         // hmm: is this Dependency Injection?
         YouAreEll urlhandler = new YouAreEll(
-            new TransactionController(
+                new TransactionController(),
                 new MessageController(), new IdController()
-        ));
-        System.out.println(urlhandler.MakeURLCall("/ids", "GET", ""));
-        System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
+        );
     }
 
-    public String get_ids() {
-        return tt.makecall("/ids", "GET", "");
+    // Example format is : "post-id"
+    public String makecall(String userInput) {
+        String[] request = userInput.split("-");
+        String controller = request[1];
+        switch(request[0].toUpperCase()) {
+            case "GET":
+                if (controller.contains("ids")) {
+                    idController.getIds();
+                } else if (controller.contains("messages")) {
+                    messageController.getMessages();
+                }
+                break;
+            case "POST":
+                if (controller.contains("post-id")) {
+                    idController.postId();
+                }
+                break;
+            default:
+                break;
+        }
+        return controller;
     }
-
-    public String get_messages() {
-        return MakeURLCall("/messages", "GET", "");
-    }
-
 
 }
