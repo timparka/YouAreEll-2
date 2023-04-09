@@ -27,9 +27,9 @@ public class TransactionController {
        return new ArrayList<Id>();
     }
 
-    public String postId(String idtoRegister, String githubName) {
+    public Id postId(String idtoRegister, String githubName) {
         Id tid = new Id("", idtoRegister, githubName); // Todo
         tid = idCtrl.postId(tid);
-        return ("Id registered.");
+        return tid;
     }
 }

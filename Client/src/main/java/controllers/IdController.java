@@ -2,18 +2,21 @@ package controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import java.util.HashMap;
 
 public class IdController {
     private HashMap<String, Id> allIds;
@@ -62,13 +65,40 @@ public class IdController {
                 .collect(Collectors.toList());
     }
 
-    public Id postId(/*Id id*/) {
-        // create json from id
-        // call server, get json result Or error
-        // result json to Id obj
+    public Id postId(Id id) {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost httpPost = new HttpPost(rootURL + "/ids");
 
-        return null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(id);
+            HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(entity);
+
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode == 200 || statusCode == 201) {
+                String responseBody = EntityUtils.toString(response.getEntity());
+                id = objectMapper.readValue(responseBody, Id.class);
+            } else {
+                // Handle the error
+            }
+
+            response.close(); // Close the response
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                httpClient.close(); // Close the httpClient
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return id;
     }
+
 
     public Id putId(Id id) {
         return null;

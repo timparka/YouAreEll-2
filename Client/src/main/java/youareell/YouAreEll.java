@@ -26,7 +26,7 @@ public class YouAreEll {
     }
 
     // Example format is : "post-id"
-    public String makecall(String userInput) {
+    public String makecall(String userInput, String idtoRegister, String githubName) {
         String[] request = userInput.split("-");
         String controller = request[1];
         switch(request[0].toUpperCase()) {
@@ -39,7 +39,9 @@ public class YouAreEll {
                 break;
             case "POST":
                 if (controller.contains("post-id")) {
-                    idController.postId();
+                    transactionController.postId(idtoRegister, githubName);
+                }else if (controller.contains("messages")) {
+                    messageController.postMessage();
                 }
                 break;
             default:

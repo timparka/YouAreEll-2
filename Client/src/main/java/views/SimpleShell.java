@@ -75,8 +75,14 @@ public class SimpleShell {
 
                 else if (list.contains("post-id"))
                 {
-                    String results = webber.makecall("post-id");
-                    SimpleShell.prettyPrint(results);
+                    if (list.size() >= 3) {
+                        String idtoRegister = list.get(1);
+                        String githubName = list.get(2);
+                        String results = webber.makecall("post-id", idtoRegister, githubName);
+                        SimpleShell.prettyPrint(results);
+                    } else {
+                        System.out.println("Please provide an ID and GitHub name.");
+                    }
                     continue;
                 }
 
