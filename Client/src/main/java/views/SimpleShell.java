@@ -68,7 +68,7 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("get-id")) {
-                    String results = webber.makecall("get-ids");
+                    String results = webber.makecall("get-ids", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
@@ -87,14 +87,14 @@ public class SimpleShell {
                 }
 
                 else if (list.contains("get")) {
-                    String results = webber.makecall("post-id");
+                    String results = webber.makecall("get-ids", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
 
                 // messages
                 if (list.contains("messages")) {
-                    String results = webber.makecall("todo tim");
+                    String results = webber.makecall("get-ids", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }

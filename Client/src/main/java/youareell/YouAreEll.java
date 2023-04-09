@@ -31,17 +31,17 @@ public class YouAreEll {
         String controller = request[1];
         switch(request[0].toUpperCase()) {
             case "GET":
-                if (controller.contains("ids")) {
+                if (controller.contains("id")) {
                     idController.getIds();
                 } else if (controller.contains("messages")) {
                     messageController.getMessages();
                 }
                 break;
             case "POST":
-                if (controller.contains("post-id")) {
+                if (controller.contains("id")) {
                     transactionController.postId(idtoRegister, githubName);
                 }else if (controller.contains("messages")) {
-                    messageController.postMessage();
+//                    messageController.postMessage();
                 }
                 break;
             default:
