@@ -167,6 +167,10 @@ public class MessageController {
     public Message postMessage(Id myId, Id toId, Message message) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(rootURL + "/ids/" + myId.getGithub() + "/messages");
+
+        message.setToId(toId.getGithub());
+        message.setFromId(myId.getGithub());
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(message);
@@ -181,6 +185,8 @@ public class MessageController {
                 message = objectMapper.readValue(responseBody, Message.class);
             } else {
                 // Handle the error
+                String responseBody = EntityUtils.toString(response.getEntity());
+                System.err.println("Error while posting the message. Status code: " + statusCode + "\nResponse: " + responseBody);
             }
 
             response.close(); // Close the response

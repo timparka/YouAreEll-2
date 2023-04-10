@@ -129,7 +129,7 @@ public class SimpleShell {
                     if (list.size() >= 4) {
                         String fromId = list.get(1);
                         String toId = list.get(2);
-                        String msg = list.get(3);
+                        String msg = String.join(" ", list.subList(3, list.size()));
                         String results = webber.makecall("post-messages", fromId, toId, msg);
                         SimpleShell.prettyPrint(results);
                         continue;

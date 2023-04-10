@@ -21,8 +21,8 @@ public class Message implements Comparable {
     private String message = "";
     private String toId = "";
     private String fromId = "";
-    private String timestamp = "";
-    private String seqId = "";
+    private String timestamp = "2023-04-09T03:47:15.048818328Z";
+    private String seqId = "-";
 
     @JsonCreator
     public Message(@JsonProperty("message") String message,
