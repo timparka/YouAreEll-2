@@ -43,14 +43,19 @@ public class YouAreEll {
                     return ids.toString();
 
                 }
-                else if (controller.contains("messages") && !request[2].contains("byName")) {
+                else if (controller.contains("messages") && !request[2].contains("byName") && !request[3].contains("toName")) {
                     List<Message> msg = messageController.getMessages();
                     return msg.toString();
                 }
-                else if (controller.contains("messages") && request[2].contains("byName")) {
+                else if (controller.contains("messages") && request[2].contains("byName") && !request[3].contains("toName")) {
                     List<Message> msgByName = transactionController.createMessageObj(idtoRegister);
                     return msgByName.toString();
                 }
+                else if (controller.contains("messages") && request[3].contains("toName")) {
+                    List<Message> msgLink = transactionController.createMessageObj2(idtoRegister, githubName);
+                    return msgLink.toString();
+                }
+
                 break;
             case "POST":
                 if (controller.contains("id")) {

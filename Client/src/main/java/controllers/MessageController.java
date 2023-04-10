@@ -108,8 +108,49 @@ public class MessageController {
     public Message getMessageForSequence(String seq) {
         return null;
     }
-    public ArrayList<Message> getMessagesFromFriend(Id myId, Id friendId) {
-        return null;
+    public List<Message> getMessagesFromFriend(Id myId, Id friendId) {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(rootURL + "/ids/" + myId.getGithub() + "/from/" + friendId.getGithub());
+        // httpGet.addHeader("Authorization", "Bearer " + accessToken);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpGet); //httpGet has zipcode url stored execute tries to grab a response from it
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        String responseBody;
+        Message[] msg = new Message[0];
+        if (statusCode == 200) {
+            try {
+                responseBody = EntityUtils.toString(response.getEntity());
+                if (responseBody.isEmpty()) {
+                    return Collections.emptyList();
+                }
+                ObjectMapper objectMapper = new ObjectMapper();
+                msg = objectMapper.readValue(responseBody, Message[].class); // Deserializing
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // Process the response body
+        } else {
+            // Handle the error
+        }
+
+        try {
+            response.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Arrays.stream(msg)
+                .collect(Collectors.toList());
     }
 
     public Message postMessage(Id myId, Id toId, Message msg) {

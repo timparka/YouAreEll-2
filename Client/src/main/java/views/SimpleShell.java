@@ -114,15 +114,16 @@ public class SimpleShell {
                         SimpleShell.prettyPrint(results);
                         continue;
                     }
-                    else if (list.contains("get-messages-fromName-toName")) {
-                        if (list.size() >= 2) {
+                }
+                else if (list.contains("get-messages-fromName-toName")) {
+                        if (list.size() >= 3) {
                             String fromId = list.get(1);
                             String toId = list.get(2);
-                            String results = webber.makecall("get-messages-byName", fromId, toId);
+                            String results = webber.makecall("get-messages-fromName-toName", fromId, toId);
                             SimpleShell.prettyPrint(results);
                             continue;
                         }
-                    }
+
                 }
                 else if (list.contains("post-messages")) {
 

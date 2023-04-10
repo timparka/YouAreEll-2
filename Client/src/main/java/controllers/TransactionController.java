@@ -43,4 +43,11 @@ public class TransactionController {
         return msgController.getMessagesForId(tid);
         //return tid;
     }
+    public List<Message> createMessageObj2(String gitHubId, String githubId2) {
+        Id tid = new Id("", "", gitHubId); // Todo
+        Id tid2 = new Id("", "", githubId2); // Todo
+        // tid = idCtrl.postId(tid);
+        return msgController.getMessagesFromFriend(tid, tid2);
+        //return tid;
+    }
 }
