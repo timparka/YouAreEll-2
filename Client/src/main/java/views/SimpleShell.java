@@ -71,7 +71,7 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("get-id")) {
-                    String results = webber.makecall("get-id", "", "");
+                    String results = webber.makecall("get-id", "", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
@@ -81,7 +81,7 @@ public class SimpleShell {
                     if (list.size() >= 3) {
                         String idtoRegister = list.get(1);
                         String githubName = list.get(2);
-                        String results = webber.makecall("post-id", idtoRegister, githubName);
+                        String results = webber.makecall("post-id", idtoRegister, githubName, "");
                         SimpleShell.prettyPrint(results);
                     } else {
                         System.out.println("Please provide an ID and GitHub name.");
@@ -93,7 +93,7 @@ public class SimpleShell {
                     if (list.size() >= 3) {
                         String idtoRegister = list.get(1);
                         String githubName = list.get(2);
-                        String results = webber.makecall("put-id", idtoRegister, githubName);
+                        String results = webber.makecall("put-id", idtoRegister, githubName, "");
                         SimpleShell.prettyPrint(results);
                     } else {
                         System.out.println("Please provide an ID and GitHub name.");
@@ -103,14 +103,14 @@ public class SimpleShell {
 
                 // messages
                 if (list.contains("get-messages")) {
-                    String results = webber.makecall("get-messages", "", "");
+                    String results = webber.makecall("get-messages", "", "", "");
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
                 else if (list.contains("get-messages-byName")) {
                     if (list.size() >= 2) {
                         String id = list.get(1);
-                        String results = webber.makecall("get-messages-byName", id, "");
+                        String results = webber.makecall("get-messages-byName", id, "", "");
                         SimpleShell.prettyPrint(results);
                         continue;
                     }
@@ -119,14 +119,21 @@ public class SimpleShell {
                         if (list.size() >= 3) {
                             String fromId = list.get(1);
                             String toId = list.get(2);
-                            String results = webber.makecall("get-messages-fromName-toName", fromId, toId);
+                            String results = webber.makecall("get-messages-fromName-toName", fromId, toId, "");
                             SimpleShell.prettyPrint(results);
                             continue;
                         }
 
                 }
                 else if (list.contains("post-messages")) {
-
+                    if (list.size() >= 4) {
+                        String fromId = list.get(1);
+                        String toId = list.get(2);
+                        String msg = list.get(3);
+                        String results = webber.makecall("post-messages", fromId, toId, msg);
+                        SimpleShell.prettyPrint(results);
+                        continue;
+                    }
                 }
                 // you need to add a bunch more.
 

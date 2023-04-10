@@ -33,7 +33,7 @@ public class YouAreEll {
 
     // Example format is : "post-id
     // "
-    public String makecall(String userInput, String idtoRegister, String githubName) {
+    public String makecall(String userInput, String param, String param2, String param3) {
         String[] request = userInput.split("-");
         String controller = request[1];
         switch(request[0].toUpperCase()) {
@@ -48,27 +48,26 @@ public class YouAreEll {
                     return msg.toString();
                 }
                 else if (controller.contains("messages") && request[2].contains("byName") && !request[3].contains("toName")) {
-                    List<Message> msgByName = transactionController.createMessageObj(idtoRegister);
+                    List<Message> msgByName = transactionController.createMessageObj(param);
                     return msgByName.toString();
                 }
                 else if (controller.contains("messages") && request[3].contains("toName")) {
-                    List<Message> msgLink = transactionController.createMessageObj2(idtoRegister, githubName);
+                    List<Message> msgLink = transactionController.createMessageObj2(param, param2);
                     return msgLink.toString();
                 }
 
                 break;
             case "POST":
                 if (controller.contains("id")) {
-                    transactionController.createIdObj(idtoRegister, githubName);
+                    transactionController.createIdObj(param, param2);
                 }else if (controller.contains("messages")) {
-//                    messageController.postMessage();
+                    Message msgLink = transactionController.createMessageObj3(param, param2, param3);
+                    return msgLink.toString();
                 }
                 break;
             case "PUT":
                 if (controller.contains("id")) {
-                    idController.putId(githubName, idtoRegister);
-                } else if (controller.contains("messages")) {
-                    messageController.getMessages();
+                    idController.putId(param2, param);
                 }
                 break;
             default:
