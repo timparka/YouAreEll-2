@@ -53,7 +53,7 @@ public class TransactionController {
     public Message createMessageObj3(String gitHubId, String githubId2, String msg) {
         Id tid = new Id("", "", gitHubId); // Todo
         Id tid2 = new Id("", "", githubId2); // Todo
-        Message msger = new Message(msg, gitHubId, githubId2, "", "");
+        Message msger = new Message(msg, gitHubId, githubId2, "2023-04-09T23:15:27.096349871Z", "-");
         // tid = idCtrl.postId(tid);
         return msgController.postMessage(tid, tid2, msger);
         //return tid;
