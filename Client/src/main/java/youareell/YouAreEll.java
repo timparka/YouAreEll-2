@@ -31,7 +31,8 @@ public class YouAreEll {
         );
     }
 
-    // Example format is : "post-id"
+    // Example format is : "post-id
+    // "
     public String makecall(String userInput, String idtoRegister, String githubName) {
         String[] request = userInput.split("-");
         String controller = request[1];
@@ -40,14 +41,20 @@ public class YouAreEll {
                 if (controller.contains("id")) {
                     List<Id> ids = idController.getIds();
                     return ids.toString();
-                } else if (controller.contains("messages")) {
+
+                }
+                else if (controller.contains("messages") && !request[2].contains("byName")) {
                     List<Message> msg = messageController.getMessages();
                     return msg.toString();
+                }
+                else if (controller.contains("messages") && request[2].contains("byName")) {
+                    List<Message> msgByName = transactionController.createMessageObj(idtoRegister);
+                    return msgByName.toString();
                 }
                 break;
             case "POST":
                 if (controller.contains("id")) {
-                    transactionController.postId(idtoRegister, githubName);
+                    transactionController.createIdObj(idtoRegister, githubName);
                 }else if (controller.contains("messages")) {
 //                    messageController.postMessage();
                 }

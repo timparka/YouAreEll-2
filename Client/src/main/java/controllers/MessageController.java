@@ -61,8 +61,49 @@ public class MessageController {
                 .collect(Collectors.toList());
 
     }
-    public ArrayList<Message> getMessagesForId(Id Id) {
-        return null;
+    public List<Message> getMessagesForId(Id id) {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(rootURL + "/ids/" + id.getGithub() + "/messages");
+        // httpGet.addHeader("Authorization", "Bearer " + accessToken);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpGet); //httpGet has zipcode url stored execute tries to grab a response from it
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        String responseBody;
+        Message[] msg = new Message[0];
+        if (statusCode == 200) {
+            try {
+                responseBody = EntityUtils.toString(response.getEntity());
+                if (responseBody.isEmpty()) {
+                    return Collections.emptyList();
+                }
+                ObjectMapper objectMapper = new ObjectMapper();
+                msg = objectMapper.readValue(responseBody, Message[].class); // Deserializing
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // Process the response body
+        } else {
+            // Handle the error
+        }
+
+        try {
+            response.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Arrays.stream(msg)
+                .collect(Collectors.toList());
     }
     public Message getMessageForSequence(String seq) {
         return null;

@@ -73,7 +73,7 @@ public class IdController {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(id);
+            String json = objectMapper.writeValueAsString(id); //serializer
             HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
             httpPost.setEntity(entity);
 

@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Id;
+import models.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class TransactionController {
 //    private IdController idCtrl;
 
     IdController idController = new IdController();
+    MessageController msgController = new MessageController();
     public TransactionController(){
 
     }
@@ -28,10 +30,17 @@ public class TransactionController {
        return new ArrayList<Id>();
     }
 
-    public void postId(String idtoRegister, String githubName) {
+    public void createIdObj(String idtoRegister, String githubName) {
         Id tid = new Id("", idtoRegister, githubName); // Todo
        // tid = idCtrl.postId(tid);
         idController.postId(tid);
+        //return tid;
+    }
+
+    public List<Message> createMessageObj(String gitHubId) {
+        Id tid = new Id("", "", gitHubId); // Todo
+        // tid = idCtrl.postId(tid);
+        return msgController.getMessagesForId(tid);
         //return tid;
     }
 }
