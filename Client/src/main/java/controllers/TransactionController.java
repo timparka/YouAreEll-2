@@ -13,7 +13,8 @@ public class TransactionController {
 
     IdController idController = new IdController();
     MessageController msgController = new MessageController();
-    public TransactionController(){
+
+    public TransactionController() {
 
     }
 
@@ -27,12 +28,12 @@ public class TransactionController {
 
     public List<Id> getIds() {
 
-       return new ArrayList<Id>();
+        return new ArrayList<Id>();
     }
 
     public void createIdObj(String idtoRegister, String githubName) {
         Id tid = new Id("", idtoRegister, githubName); // Todo
-       // tid = idCtrl.postId(tid);
+        // tid = idCtrl.postId(tid);
         idController.postId(tid);
         //return tid;
     }
@@ -43,6 +44,7 @@ public class TransactionController {
         return msgController.getMessagesForId(tid);
         //return tid;
     }
+
     public List<Message> createMessageObj2(String gitHubId, String githubId2) {
         Id tid = new Id("", "", gitHubId); // Todo
         Id tid2 = new Id("", "", githubId2); // Todo
@@ -50,6 +52,7 @@ public class TransactionController {
         return msgController.getMessagesFromFriend(tid, tid2);
         //return tid;
     }
+
     public Message createMessageObj3(String gitHubId, String githubId2, String msg) {
         Id tid = new Id("", "", gitHubId); // Todo
         Id tid2 = new Id("", "", githubId2); // Todo
@@ -57,5 +60,10 @@ public class TransactionController {
         // tid = idCtrl.postId(tid);
         return msgController.postMessage(tid, tid2, msger);
         //return tid;
+    }
+
+    public void putId(String github, String githubName) {
+        Id id = new Id("", githubName, github);
+        idController.putId(id);
     }
 }

@@ -67,7 +67,7 @@ public class YouAreEll {
                 break;
             case "PUT":
                 if (controller.contains("id")) {
-                    idController.putId(param2, param);
+                    transactionController.putId(param2, param);
                 }
                 break;
             default:

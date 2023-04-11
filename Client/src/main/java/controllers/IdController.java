@@ -14,6 +14,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -100,53 +101,71 @@ public class IdController {
 
         return id;
     }
-    public Id putId(String githubName, String newIdtoRegister) {
+    public Id putId(Id id) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPut httpPut = new HttpPut(rootURL + "/ids/" + githubName);
+        HttpPut httpPut = new HttpPut(rootURL + "/ids");
 
+        String userid = id.getUserid();
+        String github = id.getGithub();
         Id updatedId = null;
 
         try {
-            Id idToUpdate = getIdByGithubName(githubName);
-            if (idToUpdate != null) {
-                idToUpdate.setIdtoRegister(newIdtoRegister);
-                ObjectMapper objectMapper = new ObjectMapper();
-                String json = objectMapper.writeValueAsString(idToUpdate);
-                HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-                httpPut.setEntity(entity);
-
-                CloseableHttpResponse response = httpClient.execute(httpPut);
-                int statusCode = response.getStatusLine().getStatusCode();
-
-                if (statusCode == 200 || statusCode == 201) {
-                    String responseBody = EntityUtils.toString(response.getEntity());
-                    updatedId = objectMapper.readValue(responseBody, Id.class);
-                } else {
-                    // Handle the error
+            List<Id> ids = this.getIds();
+            for (Id i : ids) {
+                if (i.getGithub().equals(github)) {
+                    userid = i.getUserid();
                 }
-
-                response.close(); // Close the response
-            } else {
-                // Handle the case when the GitHub name is not found
             }
-        } catch (IOException e) {
+
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
+        }
+        if (userid.isEmpty() || userid.equals("")) {
+            postId(id);
+        } else {
             try {
-                httpClient.close(); // Close the httpClient
+                Id idToUpdate = getIdByGithub(github);
+                if (idToUpdate != null) {
+                    idToUpdate.setName(id.getName());
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String json = objectMapper.writeValueAsString(idToUpdate);
+                    HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+                    httpPut.setEntity(entity);
+
+                    CloseableHttpResponse response = httpClient.execute(httpPut);
+                    int statusCode = response.getStatusLine().getStatusCode();
+
+                    if (statusCode == 200 || statusCode == 201) {
+                        String responseBody = EntityUtils.toString(response.getEntity());
+                       updatedId = objectMapper.readValue(responseBody, Id.class);
+                    } else {
+                        // Handle the error
+                    }
+
+                    response.close(); // Close the response
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } finally {
+                try {
+                    httpClient.close(); // Close the httpClient
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
 
-        return updatedId;
+
+            return updatedId;
+        }
+        return null;
     }
 
 
-    public Id getIdByGithubName(String githubName) {
+    public Id getIdByGithub(String github) {
         List<Id> ids = getIds();
         for (Id id : ids) {
-            if (id.getGithub().equalsIgnoreCase(githubName)) {
+            if (id.getGithub().equalsIgnoreCase(github)) {
                 return id;
             }
         }
